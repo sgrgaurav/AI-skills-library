@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Process → Automation Blueprint | Free AI skill</title>
+<meta name="description" content="Describe a manual process. Get an automation blueprint: verdict, tool, risks, ROI and a one-week plan. Works with Claude, Copilot, ChatGPT and Gemini.">
+
+<!-- ============ ANALYTICS SLOT ============
+     Paste your analytics snippet here (GA4, Plausible, PostHog, etc.).
+     The page's track() function below auto-detects gtag, plausible or posthog. -->
+
+<!-- ========================================= -->
+
+<style>
+:root{--bg:#fafaf7;--card:#fff;--text:#1c1c1a;--muted:#6b6a64;--line:#e4e2da;--accent:#1f5eff;--accent-text:#fff;--ok:#16794c}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--card:#1e1e1c;--text:#f1f0ea;--muted:#9b9a92;--line:#33322e;--accent:#6b97ff;--accent-text:#0b0b0a;--ok:#4cc58a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:24px 18px 64px}
+h1{font-size:1.7rem;line-height:1.2;margin:8px 0 10px}
+.sub{color:var(--muted);margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 16px}
+.step{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+h2{font-size:1.1rem;margin:0 0 12px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button,.btn{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:12px 14px;text-align:center;text-decoration:none;display:inline-block}
+.tool[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset;font-weight:600}
+#rate button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset;font-weight:600}
+.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent);font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.row>*{flex:1 1 140px}
+ol{padding-left:20px;margin:0}
+li{margin:6px 0}
+textarea{width:100%;min-height:130px;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;resize:vertical}
+.hint{color:var(--muted);font-size:.85rem;margin:8px 0 0}
+.ok{color:var(--ok);font-weight:600;min-height:1.4em;margin:8px 0 0}
+.hidden{display:none}
+.note{font-size:.8rem;color:var(--muted);margin-top:22px}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Turn any manual process into an automation blueprint</h1>
+  <p class="sub">Describe how the work gets done today. Get a verdict, the right tool, risks, ROI and a one-week plan. Free. Works with the AI you already use.</p>
+
+  <section class="card" id="s1">
+    <p class="step">Step 1</p>
+    <h2>Which AI do you use?</h2>
+    <div class="tools" role="group" aria-label="Choose your AI tool">
+      <button class="tool" data-tool="claude" aria-pressed="false">Claude</button>
+      <button class="tool" data-tool="copilot" aria-pressed="false">Microsoft Copilot</button>
+      <button class="tool" data-tool="chatgpt" aria-pressed="false">ChatGPT</button>
+      <button class="tool" data-tool="gemini" aria-pressed="false">Gemini</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="s2">
+    <p class="step">Step 2</p>
+    <h2>Get the free skill</h2>
+    <p id="gateText" style="margin:0 0 12px">Enter your email and I'll send you updates and the next skills in the series. Then come back here to unlock your download.</p>
+    <div class="row" id="gateRow">
+      <a class="btn primary" id="formBtn" target="_blank" rel="noopener">Enter email to unlock</a>
+      <button id="unlockBtn">I've signed up</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="s3">
+    <p class="step">Step 3</p>
+    <h2 id="installTitle">Install</h2>
+    <ol id="installSteps"></ol>
+    <div class="row">
+      <a class="btn primary hidden" id="dlBtn" href="process-to-automation-blueprint.skill" download>Download skill file</a>
+      <button class="primary hidden" id="copyBase">Copy the prompt</button>
+    </div>
+    <p class="ok" id="msg1" role="status"></p>
+  </section>
+
+  <section class="card hidden" id="s4">
+    <p class="step">Try it now</p>
+    <h2>Describe your process</h2>
+    <textarea id="proc" placeholder="Example: Every Monday my ops lead pulls sales numbers from three spreadsheets, builds a summary and emails it to 6 people. Takes about 3 hours."></textarea>
+    <div class="row"><button class="primary" id="copyFull">Copy ready-to-paste message</button></div>
+    <p class="hint">This builds one message containing the instructions plus your process. Paste it into your AI and send.</p>
+    <p class="ok" id="msg2" role="status"></p>
+  </section>
+
+  <section class="card" id="fb">
+    <p class="step">Feedback</p>
+    <h2>How did the blueprint work for you?</h2>
+    <div class="row" id="rate" role="group" aria-label="Rate your experience">
+      <button data-rate="helpful" aria-pressed="false">Helpful</button>
+      <button data-rate="not-quite" aria-pressed="false">Not quite</button>
+    </div>
+    <textarea id="fbText" style="margin-top:12px;min-height:90px" placeholder="What worked, what didn't, or which skill you'd like next?"></textarea>
+    <div class="row"><button class="primary" id="fbSend">Send feedback</button></div>
+    <p class="ok" id="fbMsg" role="status"></p>
+  </section>
+
+  <p class="note">Your text stays in your browser; nothing here is sent to a server. Built by Gaurav. <a id="liLink" target="_blank" rel="noopener">Connect on LinkedIn</a></p>
+</div>
+
+<script type="text/plain" id="prompt-src">
+You are a Process to Automation Blueprint assistant. You turn a plain-language description of a manual business process into a clear automation blueprint for a founder or business leader (not an engineer). Write plainly, quantify everything you can, and be honest when something should NOT be automated.
+
+## Intake
+I will describe a process. You need six facts: (1) trigger, (2) steps in order, (3) systems touched, (4) volume (runs per day/week/month), (5) time per run, (6) who is affected and what goes wrong. If two or more are missing, ask at most 3 short questions in one message and wait. If only one or two are missing, proceed and mark assumptions with "(assumed)".
+
+## Output: use exactly these sections, in this order (roughly 1-2 pages)
+1. **Verdict** (2-3 lines): Automate now / Automate partially / Fix the process first / Don't automate, plus the single biggest reason. Decide using these checks: repeatable (80%+ same steps), frequent enough (weekly or costly each time), rule-based or text-based judgment, digital inputs, tolerable failure (a human can catch errors), stable process. 5-6 yes = Automate now; 3-4 = Automate partially; unclear or inconsistent steps = Fix the process first; very low volume, highly variable, or high-stakes with no review step = Don't automate.
+2. **Process snapshot**: a short table of Trigger | Steps today | Systems | Volume | Time per run | Pain point.
+3. **Recommended automation flow**: numbered steps from trigger to output. Label each step Automated, AI-assisted, or Human. Put a human check wherever a mistake would cost money, upset a customer, or create a compliance issue.
+4. **Tool recommendation**: ONE primary tool and one alternative, one-line reason each. Favor tools I already use or pay for. Microsoft 365 shop: Power Automate (Power Apps for a front end, Copilot Studio for an agent). Google Workspace or many SaaS apps with a non-technical team: Zapier or Make. Branching logic, transformation or lower cost at volume: Make or n8n. Sensitive data or self-hosting needed: n8n or custom code. Mostly reading or drafting text: any of these plus an AI step with human review. One-off data cleanup: a script or spreadsheet automation. Say plainly when AI is not needed and simple rules will do.
+5. **Risks and guardrails**: 3-5 bullets (data privacy and access, wrong or invented AI output, silent failures, exceptions, who owns it when it breaks), each with a specific guardrail.
+6. **Effort and return**: build effort (range), hours saved per month = volume x time per run x expected automation rate (show the arithmetic in one line), payback in weeks, confidence (Low/Medium/High) and why. Use ranges, never false precision.
+7. **One-week MVP plan**: day-by-day plan for the smallest version that proves value, ending with a definition of "done" and one success metric.
+8. **Questions to settle before building**: 3-5 questions for me to answer or ask my team or vendor.
+
+## Rules
+Plain language, no unexplained jargon. Lead with the verdict and numbers. Be direct about weak ideas; "Fix the process first" is a valuable answer. Do not invent systems, integrations or prices I did not mention. If I describe several processes, blueprint the highest-value one and list the others as "next candidates" with one line each.
+
+Wait for my process description below, then produce the blueprint.
+</script>
+
+<script>
+/* ============ CONFIG: edit these ============ */
+var CONFIG = {
+  FORM_URL: "YOUR_FORM_LINK",          // Tally / Google Form link
+  LINKEDIN_URL: "YOUR_LINKEDIN_URL",
+  FEEDBACK_EMAIL: "YOUR_EMAIL",        // feedback opens the visitor's email app addressed here
+  FEEDBACK_FORM_URL: "",               // optional: a Tally/Google Form link; if set, it is used instead of email
+  SKILL_FILE: "process-to-automation-blueprint.skill"
+};
+/* ============================================ */
+
+/* Analytics wrapper: works with GA4 (gtag), Plausible, PostHog; safe if none is installed */
+function track(name, props){
+  props = props || {};
+  try{
+    if (typeof window.gtag === "function") window.gtag("event", name, props);
+    if (typeof window.plausible === "function") window.plausible(name, {props: props});
+    if (window.posthog && typeof window.posthog.capture === "function") window.posthog.capture(name, props);
+  }catch(e){}
+}
+
+var PROMPT = document.getElementById("prompt-src").textContent.trim();
+var gateOn = CONFIG.FORM_URL.indexOf("YOUR_") !== 0;
+var unlocked = false, tool = null;
+try{ unlocked = localStorage.getItem("pab_unlocked") === "1"; }catch(e){}
+
+var INSTALL = {
+  claude: {
+    title: "Install in Claude",
+    steps: ["Download the skill file below.", "In Claude, open your Skills settings and upload the file.", "Start a new chat and describe a process, or use the box below."],
+    file: true
+  },
+  copilot: {
+    title: "Use with Microsoft Copilot",
+    steps: ["Tap Copy the prompt below.", "Paste it as your first message in Copilot, then describe your process.", "To reuse it: in Copilot Studio, paste the prompt into a new agent's instructions."],
+    file: false
+  },
+  chatgpt: {
+    title: "Use with ChatGPT",
+    steps: ["Tap Copy the prompt below.", "Paste it as your first message, then describe your process.", "To reuse it: create a custom GPT and paste the prompt into its instructions."],
+    file: false
+  },
+  gemini: {
+    title: "Use with Gemini",
+    steps: ["Tap Copy the prompt below.", "Paste it as your first message, then describe your process.", "To reuse it: create a Gem and paste the prompt into its instructions."],
+    file: false
+  }
+};
+
+var $ = function(id){return document.getElementById(id);};
+function show(id, on){ $(id).classList.toggle("hidden", !on); }
+
+function render(){
+  show("s2", !!tool && gateOn && !unlocked);
+  var ready = !!tool && (!gateOn || unlocked);
+  show("s3", ready); show("s4", ready);
+  if (ready){
+    var d = INSTALL[tool];
+    $("installTitle").textContent = d.title;
+    $("installSteps").innerHTML = "";
+    d.steps.forEach(function(s){ var li=document.createElement("li"); li.textContent=s; $("installSteps").appendChild(li); });
+    show("dlBtn", d.file);
+    show("copyBase", true);
+    $("copyBase").textContent = d.file ? "Or copy the prompt" : "Copy the prompt";
+    $("copyBase").className = d.file ? "" : "primary";
+  }
+}
+
+function copy(text, msgId, evt){
+  function done(){ $(msgId).textContent = "Copied. Now paste it into " + INSTALL[tool].title.replace(/^(Install in|Use with) /,"") + "."; track(evt, {tool: tool}); }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done, fallback);
+  } else fallback();
+  function fallback(){
+    var t=document.createElement("textarea"); t.value=text; t.style.position="fixed"; t.style.opacity="0";
+    document.body.appendChild(t); t.select(); try{document.execCommand("copy"); done();}catch(e){ $(msgId).textContent="Copy failed. Select the text manually."; }
+    document.body.removeChild(t);
+  }
+}
+
+document.querySelectorAll(".tool").forEach(function(b){
+  b.addEventListener("click", function(){
+    tool = b.getAttribute("data-tool");
+    document.querySelectorAll(".tool").forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true":"false"); });
+    $("msg1").textContent = ""; $("msg2").textContent = "";
+    track("tool_selected", {tool: tool});
+    render();
+  });
+});
+
+$("formBtn").href = gateOn ? CONFIG.FORM_URL : "#";
+$("formBtn").addEventListener("click", function(){ track("gate_form_click", {tool: tool}); });
+$("unlockBtn").addEventListener("click", function(){
+  unlocked = true; try{ localStorage.setItem("pab_unlocked","1"); }catch(e){}
+  track("unlock_confirmed", {tool: tool}); render();
+});
+$("dlBtn").setAttribute("href", CONFIG.SKILL_FILE);
+$("dlBtn").addEventListener("click", function(){ track("skill_downloaded", {tool: tool}); $("msg1").textContent="Downloading. Then upload it in your Skills settings."; });
+$("copyBase").addEventListener("click", function(){ copy(PROMPT, "msg1", "prompt_copied"); });
+$("copyFull").addEventListener("click", function(){
+  var p = $("proc").value.trim();
+  if (!p){ $("msg2").textContent = "Describe your process first."; return; }
+  copy(PROMPT + "\n\n---\nMy process:\n" + p, "msg2", "process_prompt_built");
+});
+if (CONFIG.LINKEDIN_URL.indexOf("YOUR_") !== 0) $("liLink").href = CONFIG.LINKEDIN_URL; else $("liLink").style.display="none";
+
+var rating = "";
+document.querySelectorAll("#rate button").forEach(function(b){
+  b.addEventListener("click", function(){
+    rating = b.getAttribute("data-rate");
+    document.querySelectorAll("#rate button").forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true":"false"); });
+  });
+});
+$("fbSend").addEventListener("click", function(){
+  var text = $("fbText").value.trim();
+  if (!rating && !text){ $("fbMsg").textContent = "Pick a rating or write a note first."; return; }
+  track("feedback_sent", {rating: rating || "none", tool: tool || "none"});
+  if (CONFIG.FEEDBACK_FORM_URL){
+    window.open(CONFIG.FEEDBACK_FORM_URL, "_blank", "noopener");
+    $("fbMsg").textContent = "Thanks! The feedback form opened in a new tab.";
+  } else if (CONFIG.FEEDBACK_EMAIL.indexOf("YOUR_") !== 0){
+    var body = "Rating: " + (rating || "-") + "\nAI tool: " + (tool || "-") + "\n\n" + text;
+    window.location.href = "mailto:" + CONFIG.FEEDBACK_EMAIL + "?subject=" + encodeURIComponent("Blueprint skill feedback") + "&body=" + encodeURIComponent(body);
+    $("fbMsg").textContent = "Your email app should open with the message ready to send.";
+  } else {
+    $("fbMsg").textContent = "Feedback isn't configured yet.";
+  }
+});
+
+track("launcher_view");
+</script>
+</body>
+</html>
